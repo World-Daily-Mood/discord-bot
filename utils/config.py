@@ -8,3 +8,6 @@ def load_config(config_file):
 
 def get_token():
     return load_config(config_file)["token"]
+
+def get_website_token():
+    return load_config(config_file)["website_token"]

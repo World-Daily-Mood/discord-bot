@@ -1,9 +1,10 @@
-import discord
 import os
 from discord.ext import commands
+from discord_slash import SlashCommand
 from utils import config
 
 client = commands.Bot(command_prefix="!")
+slash = SlashCommand(client)
 
 cog_folders = ["events", "commands"]
 
