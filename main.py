@@ -3,8 +3,8 @@ from discord.ext import commands
 from discord_slash import SlashCommand
 from utils import config
 
-client = commands.Bot(command_prefix="!")
-slash = SlashCommand(client)
+client = commands.Bot(command_prefix="!", case_insensitive=True)
+slash = SlashCommand(client, sync_commands=True, sync_on_cog_reload=True)
 
 cog_folders = ["events", "commands"]
 

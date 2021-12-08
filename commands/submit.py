@@ -1,8 +1,9 @@
 import discord
 import requests
-from utils import config
 from discord.ext import commands
+from discord_slash import cog_ext, SlashContext
 from discord_slash.utils.manage_components import create_select, create_select_option, create_actionrow, wait_for_component, ComponentContext
+from discord_slash.utils.manage_commands import create_choice, create_option
 
 api_root = "https://world-mood-333716.appspot.com"
 
@@ -11,8 +12,7 @@ mood_prompt = create_actionrow(
         options=[
             create_select_option("Happy", value="happy", emoji="😊"),
             create_select_option("Angry", value="angry", emoji="👺"),
-            create_select_option("Sad", value="sad", emoji="😔"),
-            create_select_option("Scared", value="scared", emoji="😨"),
+            create_select_option("Sad", value="sad", emoji="😔")
         ],
         placeholder="Choose your option",
         min_values=1,
@@ -50,6 +50,38 @@ class SubmitMood(commands.Cog):
                 
             res_embed = discord.Embed(title="Submit your mood", description=f"Click the following link to submit your mood:\n{submit_url}", color=0x00ff00)
             await button_ctx.edit_origin(embed=res_embed, components=[])
+
+    @cog_ext.cog_slash( name="Submit", 
+                        description="Submit your mood!", 
+                        guild_ids=[901125693113524295],
+                        options=[
+                            create_option(
+                                name="mood",
+                                description="Submit your mood",
+                                option_type=3,
+                                required=False,
+                                choices=[
+                                    create_choice(
+                                        name="Happy",
+                                        value="happy"
+                                    ),
+                                    create_choice(
+                                        name="Angry",
+                                        value="angry"
+                                    ),
+                                    create_choice(
+                                        name="Sad",
+                                        value="sad"
+                                    )
+                                ]
+                            )
+                        ]
+                    )
+
+
+
+    async def _submit(self, ctx: SlashContext, mood: str = None):
+        await self.submit(ctx, mood)
 
 def setup(client):
     client.add_cog(SubmitMood(client))
